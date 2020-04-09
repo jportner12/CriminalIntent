@@ -22,7 +22,7 @@ private const val ARG_CRIME_ID = "crime_id"
 private const val TAG = "CrimeFragment"
 private const val DIALOG_DATE = "DialogDate"
 private const val REQUEST_CODE = 0
-private const val DATE_FORMAT = "E MMM dd, yyyy, HH:mm z"
+private const val DATE_FORMAT = "E MMM dd, yyyy"
 private const val TIME_FORMAT = "HH:mm z"
 
 @Suppress("DEPRECATION")

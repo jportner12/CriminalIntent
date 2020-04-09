@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +24,8 @@ private const val TAG = "CrimeListFragment"
 private const val DATE = "E MMM dd, yyyy, HH:mm z"
 
 class CrimeListFragment : Fragment() {
+
+    private lateinit var noCrimes: TextView
 
     /*
     * Required interface for hosting activities
@@ -49,12 +49,19 @@ class CrimeListFragment : Fragment() {
         callBacks = context as Callbacks?
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_crime_list, container, false)
 
         crimeRecyclerView = view.findViewById(R.id.crime_recycler_view) as RecyclerView
         crimeRecyclerView.layoutManager = LinearLayoutManager(context)
         crimeRecyclerView.adapter = adapter
+
+        noCrimes = view.findViewById(R.id.no_crimes) as TextView
         return view
     }
 
@@ -75,10 +82,35 @@ class CrimeListFragment : Fragment() {
         callBacks = null
     }
 
-    private fun updateUI(crimes: List<Crime>) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_crime_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_crime -> {
+                val crime = Crime()
+                crimeListViewModel.addCrime(crime)
+                callBacks?.onCrimeSelected(crime.id)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateUI(crimes: MutableList<Crime>) {
+        if (crimes.isEmpty()) {
+            noCrimes.visibility = View.VISIBLE
+        } else {
+            noCrimes.visibility = View.GONE
+        }
+
         adapter = CrimeAdapter(crimes)
         //adapter?.submitList(crimes) // ch 12 challenge
         crimeRecyclerView.adapter = adapter
+
+
     }
 
     private inner class CrimeHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
@@ -96,7 +128,6 @@ class CrimeListFragment : Fragment() {
         fun bind(crime:Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            //dateTextView.text = this.crime.date.toString()
             val dateFormat = SimpleDateFormat(DATE)
             dateTextView.text = dateFormat.format(this.crime.date)
             solvedImageView.visibility = if (crime.isSolved) {

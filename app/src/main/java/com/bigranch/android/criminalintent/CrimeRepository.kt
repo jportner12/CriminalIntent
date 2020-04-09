@@ -16,6 +16,7 @@ class CrimeRepository private constructor(context: Context) {
     private val database : CrimeDatabase = Room.databaseBuilder(context.applicationContext, CrimeDatabase::class.java, DATABASE_NAME).build()
 
     private val crimeDao = database.crimeDao()
+
     private val executor = Executors.newSingleThreadExecutor()
 
     fun getCrimes(): LiveData<MutableList<Crime>> = crimeDao.getCrimes()

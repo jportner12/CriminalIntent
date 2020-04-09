@@ -10,4 +10,4 @@ data class Crime(@PrimaryKey val id: UUID =UUID.randomUUID(),
                  var title:String = "",
                  var date: String = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH).format(Date().time),
                  var isSolved:Boolean = false)
-                 //var requiresPolice: Boolean = false){ } this must be deleted because of the database testing
+                 //var requiresPolice: Boolean = false) //this must be deleted because of the database testing

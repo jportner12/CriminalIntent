@@ -8,6 +8,7 @@ import java.util.*
 @Entity
 data class Crime(@PrimaryKey val id: UUID =UUID.randomUUID(),
                  var title:String = "",
-                 var date: String = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH).format(Date().time),
+                 var date: Date = Date(),
+                 //var date: String = DateFormat.getDateInstance(DateFormat.FULL, Locale.ENGLISH).format(Date().time), // Turned this off for the emulator to test
                  var isSolved:Boolean = false)
                  //var requiresPolice: Boolean = false) //this must be deleted because of the database testing

@@ -1,5 +1,6 @@
 package com.bigranch.android.criminalintent
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -18,9 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_crime_list.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "CrimeListFragment"
+private const val DATE = "E MMM dd, yyyy, HH:mm z"
 
 class CrimeListFragment : Fragment() {
 
@@ -89,10 +92,13 @@ class CrimeListFragment : Fragment() {
             itemView.setOnClickListener(this)
         }
 
+        @SuppressLint("SimpleDateFormat")
         fun bind(crime:Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            dateTextView.text = this.crime.date
+            //dateTextView.text = this.crime.date.toString()
+            val dateFormat = SimpleDateFormat(DATE)
+            dateTextView.text = dateFormat.format(this.crime.date)
             solvedImageView.visibility = if (crime.isSolved) {
                 View.VISIBLE
             } else {

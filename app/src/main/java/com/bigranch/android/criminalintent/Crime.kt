@@ -13,4 +13,7 @@ data class Crime(@PrimaryKey val id: UUID =UUID.randomUUID(),
                  var isSolved:Boolean = false,
                  //var requiresPolice: Boolean = false) //this must be deleted because of the database testing
                  var suspect: String = "",
-                 var number: String = "")
+                 var number: String = "") {
+
+    val photoFileName get() = "IMG-$id.jpg"
+}
